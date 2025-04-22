@@ -1,0 +1,18 @@
+#define greatest(x, y) \
+if(x > y) { \
+    printf("greatest of %d and %d is %d", x, y, x); \
+} else { \
+    printf("greatest of %d and %d is %d", x, y, y); \
+}
+
+greatest.c
+#include <stdio.h>
+#include "greatest.h"
+
+int main() {
+    int a, b;
+    printf("enter two numbers: ");
+    scanf("%d %d", &a, &b);
+    greatest(a, b);
+    return 0;
+}
