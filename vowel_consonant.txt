@@ -1,0 +1,22 @@
+%option noyywrap
+
+%{
+#include<stdio.h>
+int vowels = 0, consonants = 0;
+%}
+
+vowel [aAeEiIoOuU]
+consonant [b-df-hj-np-tv-zB-DF-HJ-NP-TV-Z]
+
+%%
+{vowel} { vowels++; printf("%c is a vowel\n", yytext[0]); }
+{consonant} { consonants++; printf("%c is a consonant\n", yytext[0]); }
+\n { return 0; }
+%%
+
+int main() {
+    printf("enter text: ");
+    yylex();
+    printf("total vowels: %d \ntotal consonants: %d", vowels, consonants);
+    return 0;
+}
