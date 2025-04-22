@@ -1,0 +1,83 @@
+def build_precedence_table():
+    precedence_table = {}
+    symbols = ['+', '*', 'id', '$']
+
+    for a in symbols:
+        precedence_table[a] = {}
+        for b in symbols:
+            if a == 'id':
+                precedence_table[a][b] = '>' if b in ['+', '*', '$'] else '-'
+            elif a == '+':
+                precedence_table[a][b] = '>' if b in ['+', '$'] else '<'
+            elif a == '*':
+                precedence_table[a][b] = '<' if b == 'id' else '>'
+            elif a == '$':
+                precedence_table[a][b] = '<' if b != '$' else 'Accept'
+
+    return precedence_table
+
+def print_precedence_table(precedence_table):
+    symbols = ['+', '*', 'id', '$']
+    print("Precedence Table:")
+    print("      " + "  ".join(symbols))
+    print('-' * 25)
+    for row in symbols:
+        print(row.ljust(5), "  ".join(precedence_table[row][col] for col in symbols))
+
+def get_precedence(precedence_table, a, b):
+    return precedence_table[a][b]
+
+def reduce(stack):
+    if stack[-1] == 'id':
+        stack.pop()
+        stack.append('E')
+        return "E -> id"
+    elif len(stack) >= 3 and stack[-3] == 'E' and stack[-1] == 'E':
+        op = stack[-2]
+        if op in ['+', '*']:
+            stack.pop()
+            stack.pop()
+            stack.pop()
+            stack.append('E')
+            return f"E -> E {op} E"
+    return ""
+
+def parse(input_string):
+    precedence_table = build_precedence_table()
+    print_precedence_table(precedence_table)
+
+    stack = ['$']
+    input_list = input_string.split() + ['$']
+
+    print("\nStack\t\t\tInput\t\t\tAction")
+    print("=" * 60)
+
+    while True:
+        print(" ".join(stack).ljust(20), " ".join(input_list).ljust(20), end=' ')
+        
+        top = stack[-1] if stack[-1] != 'E' else stack[-2]
+        next_input = input_list[0] if input_list else '$'
+
+        precedence = get_precedence(precedence_table, top, next_input)
+
+        if precedence == "Accept":
+            action = "Accept"
+            print(action)
+            break
+        elif precedence == '<':
+            action = "Shift"
+            stack.append(input_list.pop(0))
+        elif precedence == '>':
+            reduction = reduce(stack)
+            action = f"Reduce {reduction}" if reduction else "Reduce"
+        elif precedence == "-":
+            action = "Error"
+            print(action)
+            return
+
+        print(action)
+
+if __name__ == "__main__":
+    input_string = "id + id * id"
+    print(f"Input String: {input_string}\n")
+    parse(input_string)
