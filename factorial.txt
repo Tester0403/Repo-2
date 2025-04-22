@@ -1,0 +1,18 @@
+fact.h
+#define fact(n) \
+for(i = 1; i <= n; i++) { \
+    f *= i; \
+}
+
+fact.c     
+#include <stdio.h>
+#include "fact.h"
+
+int main() {
+    int i, f = 1, num;
+    printf("enter no.: ");
+    scanf("%d", &num);
+    fact(num);
+    printf("factorial of %d = %d", num, f);
+    return 0;
+}
