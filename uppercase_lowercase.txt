@@ -1,0 +1,22 @@
+%option noyywrap
+
+%{
+#include <stdio.h>
+int upper = 0, lower = 0;
+%}
+
+uc [A-Z]
+lc [a-z]
+
+%%
+{uc} { upper++; printf("%c is Uppercase\n", yytext[0]); }
+{lc} { lower++; printf("%c is Lowercase\n", yytext[0]); }
+\n { return 0; }
+%%
+
+int main() {
+    printf("Enter text: ");
+    yylex();
+    printf("\nTotal Uppercase letters: %d\nTotal Lowercase letters: %d\n", upper, lower);
+    return 0;
+}
