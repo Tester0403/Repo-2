@@ -1,0 +1,21 @@
+%option noyywrap
+
+%{
+#include <stdio.h>
+int keywords = 0;
+%}
+
+keyword   "if"|"else"|"while"|"return"|"int"|"float"|"char"|"void"
+
+%%
+{keyword} { keywords++; printf("%s is a Keyword\n", yytext); }
+. { }
+\n { return 0; }
+%%
+
+int main() {
+    printf("Enter code: ");
+    yylex();
+    printf("\nTotal Keywords: %d\n", keywords);
+    return 0;
+}
