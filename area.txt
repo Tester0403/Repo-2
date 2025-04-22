@@ -1,0 +1,40 @@
+area.h
+#define square(s) (s * s)
+#define rect(l, w) (l * w)
+
+area.c
+#include <stdio.h>
+#include "area.h"
+
+int main() {
+    int choice, a, b, result;
+    do {
+        printf("\nMenu: \n1. Area of Square \n2. Area of rectangle \n3. Exit \nEnter ur choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+        case 1:
+            printf("enter side of square: ");
+            scanf("%d", &a);
+            result = square(a);
+            printf("area of square with side %d = %d\n", a, result);
+            break;
+
+        case 2:
+            printf("enter length and width of rectangle: ");
+            scanf("%d %d", &a, &b);
+            result = rect(a, b);
+            printf("area of rectangle with length %d and width %d = %d\n", a, b, result);
+            break;
+
+        case 3:
+            printf("exiting...");
+            break;
+
+        default:
+            printf("invalid choice.");
+        }
+    } while(choice != 3);
+
+    return 0;
+}
